@@ -1,0 +1,8 @@
+HACStego - a steganography toolset, implemented in C, with a Python GUI
+This is the primary component of our HACS408L final project, to be applied to an example forensic investigation
+
+Capabilities: steganographic hiding and unhiding for raster image files, including common and novel algorithms
+Supported file formats: n/a
+	In progress: BMP, PNG, JPEG
+
+Authors: Nicholas Froehlinger, Justin Hudis
