@@ -1,9 +1,0 @@
-/mnt/c/Users/core/Documents/HACStego/libspng-0.7.1/cbuild/CMakeFiles/install/strip.dir
-/mnt/c/Users/core/Documents/HACStego/libspng-0.7.1/cbuild/CMakeFiles/install/local.dir
-/mnt/c/Users/core/Documents/HACStego/libspng-0.7.1/cbuild/CMakeFiles/install.dir
-/mnt/c/Users/core/Documents/HACStego/libspng-0.7.1/cbuild/CMakeFiles/list_install_components.dir
-/mnt/c/Users/core/Documents/HACStego/libspng-0.7.1/cbuild/CMakeFiles/rebuild_cache.dir
-/mnt/c/Users/core/Documents/HACStego/libspng-0.7.1/cbuild/CMakeFiles/edit_cache.dir
-/mnt/c/Users/core/Documents/HACStego/libspng-0.7.1/cbuild/CMakeFiles/example.dir
-/mnt/c/Users/core/Documents/HACStego/libspng-0.7.1/cbuild/CMakeFiles/spng_static.dir
-/mnt/c/Users/core/Documents/HACStego/libspng-0.7.1/cbuild/CMakeFiles/spng.dir

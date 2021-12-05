@@ -6,11 +6,12 @@ default_target: all
 .PHONY : default_target
 
 #specify library and header paths
+
+#OLD PNG LIB
 #PNG_LIBDIR = /path/to/dir/containing/.so/or/.a/files
-PNG_LIBDIR = .
-PNG_LIB_FILE = NAME_OF_FILE
-#PNG_HDIR = /path/to/dir/containing/.h/files
-PNG_HDIR = ./libspng-0.7.1/spng
+#PNG_LIB_FILE = NAME_OF_FILE
+#PNG_HDIR = ./libspng-0.7.1/spng
+
 BMP_LIBDIR = ./qdbmp_1.0.0
 BMP_LIB_FILE = qdbmp.o
 BMP_SRC_FILE = qdbmp.c
@@ -25,8 +26,10 @@ BDIR = ./build
 
 #flags
 CC = gcc
-CINCL = -I$(PNG_HDIR) -I$(BMP_HDIR) -I$(IDIR)
-CLIBS = -L$(PNG_LIBDIR)
+#CINCL = -I$(PNG_HDIR) -I$(BMP_HDIR) -I$(IDIR)
+CINCL = -I$(BMP_HDIR) -I$(IDIR)
+#CLIBS = -L$(PNG_LIBDIR)
+CLIBS = -L
 CFLAGS = $(CINCL) $(CLIBS) -g
 
 #target lists
@@ -45,8 +48,10 @@ algos: image
 image: $(LIB_TARGETS)
 	$(CC) $(CFLAGS) -c $(SDIR)/image.c $(BMP_LIBDIR)/$(BMP_LIB_FILE) -o $(BDIR)/image.o
 
-pnglib: $(PNG_LIBDIR)/$(PNG_LIB_FILE)
+#pnglib: $(PNG_LIBDIR)/$(PNG_LIB_FILE)
 #not specifying how to make it cuz scary
+pnglib:
+	echo "Must apt install libpng-dev"
 
 bmplib:
 	$(CC) $(CFLAGS) -c $(BMP_LIBDIR)/$(BMP_SRC_FILE) -o $(BMP_LIBDIR)/$(BMP_LIB_FILE)

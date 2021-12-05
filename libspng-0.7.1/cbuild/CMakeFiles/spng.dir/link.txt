@@ -1,1 +1,0 @@
-/usr/bin/cc -fPIC   -shared -Wl,-soname,libspng.so -o libspng.so CMakeFiles/spng.dir/spng/spng.c.o  -lm -lz 

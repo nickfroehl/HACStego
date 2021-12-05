@@ -1,1 +1,0 @@
-/usr/bin/cc   -rdynamic CMakeFiles/example.dir/examples/example.c.o  -o example  -Wl,-rpath,/mnt/c/Users/core/Documents/HACStego/libspng-0.7.1/cbuild libspng.so -lm -lz 
