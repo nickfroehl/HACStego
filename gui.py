@@ -11,7 +11,12 @@ class Mode(Enum):
     ENCODE = "ENCODE"
     DECODE = "DECODE"
 
-algorithms = ["alg1", "alg2", "alg3"]
+algorithms = [
+    "LSB_Red", "nLSB_Red", "fB_Red", "MSB_Red", "nMSB_Red",
+    "LSB_Green", "nLSB_Green", "fB_Green", "MSB_Green", "nMSB_Green",
+    "LSB_Blue", "nLSB_Blue", "fB_Blue", "MSB_Blue", "nMSB_Blue",
+    "LSB_RGB", "nLSB_RGB", "fB_RGB", "MSB_RGB", "nMSB_RGB",
+]
 
 
 # Functions
