@@ -91,7 +91,7 @@ int test3() {
 int Packed_RGB_To_Pixel_Data(void *rgb, unsigned int size, BMP_Header *header, struct PixelData **pDat) {
 	pDat = malloc(sizeof(struct PixelData)); //opportunity to error-check
 	(*pDat)->data = rgb;
-	
+
 	if (header->BitsPerPixel == 8) {
 		(*pDat)->channelBitDepths[0] = 3;
 		(*pDat)->channelBitDepths[1] = 2;
@@ -111,10 +111,10 @@ int Packed_RGB_To_Pixel_Data(void *rgb, unsigned int size, BMP_Header *header, s
 		(*pDat)->channelBitDepths[3] = 0;
 		(*pDat)->channelBitDepths[4] = 0;
 	} else return EINVAL_DEPTH;
-	
+
 	(*pDat)->nChannels = 3; //i think that's universal?
 	(*pDat)->nPixels = (unsigned long) size / (header->BitsPerPixel>>3);
-	
+
 	return 0;
 }
 
@@ -122,7 +122,7 @@ int Packed_RGB_To_Pixel_Data(void *rgb, unsigned int size, BMP_Header *header, s
 #define BMP_PADDING_PER_ROW ((4-((BMP_DATABYTES_PER_ROW)%4))%4)
 #define BMP_ROWWIDTH (BMP_DATABYTES_PER_ROW + BMP_PADDING_PER_ROW)
 #define TOTAL_PADDING_BYTES (bmp->Header.Height*BMP_PADDING_PER_ROW)
-int BMP_Data_To_Packed_RGB(BMP *bmp, void **rgb, unsigned int *size, unsigned char *bit_depth) {
+int BMP_Data_To_Packed_RGB(BMP *bmp, void **rgb, unsigned int *size) {
 	//TEMP: only supports 24 bit depth
 		//but actually, should just... work, in general. only my printout was specific to 24 bit depth. heck yes!
 	unsigned int i, rgb_offset, bmp_offset;
@@ -130,7 +130,6 @@ int BMP_Data_To_Packed_RGB(BMP *bmp, void **rgb, unsigned int *size, unsigned ch
 		//padding is n_rows*padding_per_row
 		//padding_per_row is (bit_depth>>3*width)%4
 		//n_rows is height
-	*bit_depth = bmp->Header.BitsPerPixel;
 	*size = bmp->Header.ImageDataSize - TOTAL_PADDING_BYTES;
 	//printf("%u --> %u, because %u=%u*...\n", bmp->Header.ImageDataSize, *size, BMP_PADDING_PER_ROW, bmp->Header.Width);
 	*rgb = malloc(*size); //opportunity to error-check
@@ -145,34 +144,53 @@ int BMP_Data_To_Packed_RGB(BMP *bmp, void **rgb, unsigned int *size, unsigned ch
 /*
 int Packed_RGB_To_BMP_Data(BMP *bmp, void *rgb, unsigned int size, const char *pad_data, unsigned int pad_data_size) {
 	//should? support non-24 bit depth just fine, so long as %8
-	unsigned int i, rgb_offset, bmp_offset, pad_written;
+	unsigned int i, rgb_offset, bmp_offset;//, pad_written;
+
 
 	for (i=0, /*rgb_offset=bmp->Header.Height*BMP_DATABYTES_PER_ROW,*/ /*bmp_offset=(bmp->Header.Height-1)*BMP_ROWWIDTH, rgb_offset=0;
 		i<bmp->Header.Height;
 		i++, rgb_offset+=BMP_DATABYTES_PER_ROW, bmp_offset-=BMP_ROWWIDTH
 	) {
 		memcpy(bmp->Data+bmp_offset, *rgb+rgb_offset, BMP_DATABYTES_PER_ROW);
-		if 
-		memcpy(bmp->Data+bmp_offset+BMP_DATABYTES_PER_ROW, , BMP_PADDING_PER_ROW)
+		if (pad_data_size >= BMP_PADDING_PER_ROW) {
+			memcpy(bmp->Data+bmp_offset+BMP_DATABYTES_PER_ROW, , BMP_PADDING_PER_ROW);
+			pad_data_size -= BMP_PADDING_PER_ROW;
+		else if (pad_data_size) {
+			memcpy(bmp->Data+bmp_offset+BMP_DATABYTES_PER_ROW, , pad_data_size);
+
+			pad_data_size -= BMP_PADDING_PER_ROW;
+			pad_data_size = 0;
+		}
 	}
-	
+
 }
 */
-int RGB_From_BMP_File(const char *filename, void **rgb, unsigned int *size, unsigned char *bit_depth) {
-	BMP *bmp;
+int RGB_From_BMP_File(const char *filename, void **rgb, unsigned int *size, BMP **bmp) {
 	int res;
-	bmp = BMP_ReadFile(filename);
-	res = BMP_Data_To_Packed_RGB(bmp, rgb, size, bit_depth);
+	*bmp = BMP_ReadFile(filename);
+	res = BMP_Data_To_Packed_RGB(*bmp, rgb, size);
 	return res;
 }
 
+int Pixel_Data_From_BMP_File(const char *filename, struct PixelData **pDat) {
+	BMP *bmp;
+	void *rgb;
+	unsigned int size;
+	RGB_From_BMP_File(filename, &rgb, &size, &bmp);
+	Packed_RGB_To_Pixel_Data(rgb, size, &(bmp->Header), pDat);
+	BMP_Free(bmp);
+	return 0;
+}
+
 int test4() {
+	BMP *bmp;
 	unsigned char *rgb, depth;
 	unsigned int size;
 	UINT i, res;
 
-	res = RGB_From_BMP_File( "./images/tinier_primary.bmp", &rgb, &size, &depth );
+	res = RGB_From_BMP_File( "./images/tinier_primary.bmp", &rgb, &size, &bmp );
 	for (i=0; i<size; i+=3) printf("%x,%x,%x\n", rgb[i+2], rgb[i+1], rgb[i]);
+	BMP_Free(bmp);
 	return res;
 }
 
