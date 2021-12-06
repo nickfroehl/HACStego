@@ -29,8 +29,8 @@ CC = gcc
 #CINCL = -I$(PNG_HDIR) -I$(BMP_HDIR) -I$(IDIR)
 CINCL = -I$(BMP_HDIR) -I$(IDIR)
 #CLIBS = -L$(PNG_LIBDIR)
-CLIBS = -L
-CFLAGS = $(CINCL) $(CLIBS) -g
+CLIBS = -lpng
+CFLAGS = $(CINCL) -g
 
 #target lists
 #LIB_TARGETS = pnglib bmplib
@@ -41,7 +41,7 @@ SRC_TARGETS = image algos main
 all: $(LIB_TARGETS) $(SRC_TARGETS)
 
 main: algos
-	$(CC) $(CFLAGS) $(SDIR)/hacstego.c $(BDIR)/image.o $(BDIR)/algos.o -o $(BDIR)/hacstego.x
+	$(CC) $(CFLAGS) $(SDIR)/hacstego.c $(BDIR)/image.o $(BDIR)/algos.o $(CLIBS) -o $(BDIR)/hacstego.x
 	
 algos: image
 	$(CC) $(CFLAGS) -c $(SDIR)/algos.c -o $(BDIR)/algos.o

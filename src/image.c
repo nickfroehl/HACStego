@@ -1,6 +1,6 @@
 #include <stdio.h>
-
 #include <png.h>
+
 #include "image.h"
 #include "errno.h"
 #include "qdbmp.h"
@@ -19,7 +19,7 @@ char is_png(const char *file_name) {
 	fp = fopen(file_name, "rb");
 	
 	if (!fp) return EBADFILE;
-	fread(header, 1, PNG_MAGIC_SIZE, fp);
+	fread(magic, 1, PNG_MAGIC_SIZE, fp);
 	if (png_sig_cmp(magic, 0, PNG_MAGIC_SIZE)) return ENOTPNG;
 	else return 0;
 }
