@@ -111,6 +111,7 @@ int Packed_RGB_To_Pixel_Data(void *rgb, unsigned int size, BMP_Header *header, s
 	} else return EINVAL_DEPTH;
 	
 	(*pDat)->nChannels = 3; //i think that's universal?
+	(*pDat)->nPixels = (unsigned long) size / (header->BitsPerPixel>>3);
 	
 	return 0;
 }
