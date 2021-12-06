@@ -154,6 +154,7 @@ BMP* BMP_Create( UINT width, UINT height, USHORT depth )
 
 
 	/* Allocate pixels */
+	//this means that our Data contains the padding bytes, so to pull those out might suck
 	bmp->Data = (UCHAR*) calloc( bmp->Header.ImageDataSize, sizeof( UCHAR ) );
 	if ( bmp->Data == NULL )
 	{
@@ -292,6 +293,10 @@ BMP* BMP_ReadFile( const char* filename )
 
 
 	/* Read image data */
+	/*if ( bmp->Header.BitsPerPixel == 16 ) {
+		
+	}*/
+	
 	if ( fread( bmp->Data, sizeof( UCHAR ), bmp->Header.ImageDataSize, f ) != bmp->Header.ImageDataSize )
 	{
 		BMP_LAST_ERROR_CODE = BMP_FILE_INVALID;

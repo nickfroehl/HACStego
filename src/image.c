@@ -84,3 +84,26 @@ int test3() {
 
 	return 0;
 }
+
+#define BMP_DATABYTES_PER_ROW bmp->Header->Width*((bmp->Header->BitsPerPixel>>3)
+#define BMP_PADDING_PER_ROW (4-((BMP_DATABYTES_PER_ROW)%4))
+//runs slow, but time is money; better to write own / modify BMP library to auto-do this
+int BMP_Data_To_Packed_RGB(BMP *bmp, void **rgb, unsigned long *size) {
+	unsigned long i, rgb_offset, bmp_offset;
+	//size is bmp data size, minus padding
+		//padding is n_rows*padding_per_row
+		//padding_per_row is (bit_depth>>3*width)%4
+		//n_rows is height
+	*size = bmp->Header->ImageDataSize - bmp->Header->Height*BMP_PADDING_PER_ROW;
+	*rgb = malloc(*size); //opportunity to error-check
+	for (i=rgb_offset=bmp_offset=0;
+		i<bmp->Header->Height;
+		i++, rgb_offset+=BMP_DATABYTES_PER_ROW, bmp_offset=BMP_PADDING_PER_ROW
+	) memcpy(*rgb+rgb_offset, bmp->Data+bmp_offset, BMP_COLORBYTES_PER_ROW);
+	return 0;
+}
+int RGB_From_BMP_File(const char *filename, void **rgb, unsigned long *size) {
+	BMP *bmp;
+	bmp = BMP_ReadFile(filename);
+	return int BMP_Data_To_Packed_RGB(bmp, rgb, size);
+}
