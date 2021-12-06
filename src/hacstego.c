@@ -11,5 +11,7 @@ int main(int argc, char**argv) {
 	//printf("test3: %d\n", a);
 	a = (channel) test4();
 	printf("test4: %d\n", a);
+	a = (channel) test5();
+	printf("test5: %d\n", a);
 	return 0;
 }

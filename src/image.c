@@ -3,6 +3,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <png.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 #include "image.h"
 #include "errno.h"
@@ -194,13 +197,14 @@ int test4() {
 	return res;
 }
 
-/* int test5() {
+int test5() {
 	unsigned char *rgb, depth;
 	unsigned int size;
 	UINT i, res;
+	struct PixelData *pd;
 
-	res = RGB_From_BMP_File( "./images/tinier_primary.bmp", &rgb, &size, &depth );
+	res = Pixel_Data_From_BMP_File( "./images/tinier_primary.bmp", &pd);
 	int fd = open("./images/tinier_encoded.bin", O_WRONLY | O_CREAT);
-	fB_RGB(fd, )
-	return res;
-} */
+	fB_RGB(fd, pd, 255);
+	return close(fd);
+}
