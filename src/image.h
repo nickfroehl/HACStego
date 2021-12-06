@@ -17,10 +17,13 @@ struct Pixel {
 	channel red, green, blue, c4, c5;
 };
 
+int Pixel_Data_From_BMP_File(const char *filename, struct PixelData **pDat);
+
 int test1();
 int test2();
 int test3();
 int test4();
 int test5();
+int test6();
 
 #endif

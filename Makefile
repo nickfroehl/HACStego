@@ -38,10 +38,13 @@ CFLAGS = $(CINCL) -g
 LIB_TARGETS = bmplib
 SRC_TARGETS = image algos main
 
-run: all
+run: all cleanout
 	./build/hacstego.x
+dbg: gdb
 gdb: all
 	gdb ./build/hacstego.x
+cleanout:
+	rm -f ./images/*.bin
 
 all: $(LIB_TARGETS) $(SRC_TARGETS)
 

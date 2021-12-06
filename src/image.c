@@ -38,7 +38,7 @@ int test2() {
 	FILE *fp = fopen("./images/16by4.png", "rb");
 	//FILE *fp = fopen("./images/spectrum.png", "rb");
 	png_uint_32 width, height;
-	unsigned int i, j, bit_depth, color_type, blah;
+	UINT i, j, bit_depth, color_type, blah;
 
 	png_init_io(read_ptr, fp);
 	//png_read_info(read_ptr, info_ptr);
@@ -91,7 +91,7 @@ int test3() {
 	return 0;
 }
 
-int Packed_RGB_To_Pixel_Data(void *rgb, unsigned int size, BMP_Header *header, struct PixelData **pDat) {
+int Packed_RGB_To_Pixel_Data(void *rgb, UINT size, BMP_Header *header, struct PixelData **pDat) {
 	*pDat = malloc(sizeof(struct PixelData)); //opportunity to error-check
 	(*pDat)->data = rgb;
 
@@ -107,10 +107,10 @@ int Packed_RGB_To_Pixel_Data(void *rgb, unsigned int size, BMP_Header *header, s
 		(*pDat)->channelBitDepths[2] = 5;
 		(*pDat)->channelBitDepths[3] = 0;
 		(*pDat)->channelBitDepths[4] = 0;
-	} else if (header->BitsPerPixel == 16) {
-		(*pDat)->channelBitDepths[0] = 5;
-		(*pDat)->channelBitDepths[1] = 6;
-		(*pDat)->channelBitDepths[2] = 5;
+	} else if (header->BitsPerPixel == 24) {
+		(*pDat)->channelBitDepths[0] = 8;
+		(*pDat)->channelBitDepths[1] = 8;
+		(*pDat)->channelBitDepths[2] = 8;
 		(*pDat)->channelBitDepths[3] = 0;
 		(*pDat)->channelBitDepths[4] = 0;
 	} else return EINVAL_DEPTH;
@@ -125,10 +125,10 @@ int Packed_RGB_To_Pixel_Data(void *rgb, unsigned int size, BMP_Header *header, s
 #define BMP_PADDING_PER_ROW ((4-((BMP_DATABYTES_PER_ROW)%4))%4)
 #define BMP_ROWWIDTH (BMP_DATABYTES_PER_ROW + BMP_PADDING_PER_ROW)
 #define TOTAL_PADDING_BYTES (bmp->Header.Height*BMP_PADDING_PER_ROW)
-int BMP_Data_To_Packed_RGB(BMP *bmp, void **rgb, unsigned int *size) {
+int BMP_Data_To_Packed_RGB(BMP *bmp, void **rgb, UINT *size) {
 	//TEMP: only supports 24 bit depth
 		//but actually, should just... work, in general. only my printout was specific to 24 bit depth. heck yes!
-	unsigned int i, rgb_offset, bmp_offset;
+	UINT i, rgb_offset, bmp_offset;
 	//size is bmp data size, minus padding
 		//padding is n_rows*padding_per_row
 		//padding_per_row is (bit_depth>>3*width)%4
@@ -145,9 +145,9 @@ int BMP_Data_To_Packed_RGB(BMP *bmp, void **rgb, unsigned int *size) {
 }
 
 /*
-int Packed_RGB_To_BMP_Data(BMP *bmp, void *rgb, unsigned int size, const char *pad_data, unsigned int pad_data_size) {
+int Packed_RGB_To_BMP_Data(BMP *bmp, void *rgb, UINT size, const char *pad_data, UINT pad_data_size) {
 	//should? support non-24 bit depth just fine, so long as %8
-	unsigned int i, rgb_offset, bmp_offset;//, pad_written;
+	UINT i, rgb_offset, bmp_offset;//, pad_written;
 
 
 	for (i=0, /*rgb_offset=bmp->Header.Height*BMP_DATABYTES_PER_ROW,*/ /*bmp_offset=(bmp->Header.Height-1)*BMP_ROWWIDTH, rgb_offset=0;
@@ -168,7 +168,7 @@ int Packed_RGB_To_BMP_Data(BMP *bmp, void *rgb, unsigned int size, const char *p
 
 }
 */
-int RGB_From_BMP_File(const char *filename, void **rgb, unsigned int *size, BMP **bmp) {
+int RGB_From_BMP_File(const char *filename, void **rgb, UINT *size, BMP **bmp) {
 	int res;
 	*bmp = BMP_ReadFile(filename);
 	res = BMP_Data_To_Packed_RGB(*bmp, rgb, size);
@@ -178,7 +178,7 @@ int RGB_From_BMP_File(const char *filename, void **rgb, unsigned int *size, BMP 
 int Pixel_Data_From_BMP_File(const char *filename, struct PixelData **pDat) {
 	BMP *bmp;
 	void *rgb;
-	unsigned int size;
+	UINT size;
 	RGB_From_BMP_File(filename, &rgb, &size, &bmp);
 	Packed_RGB_To_Pixel_Data(rgb, size, &(bmp->Header), pDat);
 	BMP_Free(bmp);
@@ -187,8 +187,9 @@ int Pixel_Data_From_BMP_File(const char *filename, struct PixelData **pDat) {
 
 int test4() {
 	BMP *bmp;
-	unsigned char *rgb, depth;
-	unsigned int size;
+	channel *rgb;
+	unsigned char depth;
+	UINT size;
 	UINT i, res;
 
 	res = RGB_From_BMP_File( "./images/tinier_primary.bmp", &rgb, &size, &bmp );
@@ -198,13 +199,32 @@ int test4() {
 }
 
 int test5() {
-	unsigned char *rgb, depth;
-	unsigned int size;
-	UINT i, res;
+	unsigned char depth;
 	struct PixelData *pd;
 
-	res = Pixel_Data_From_BMP_File( "./images/tinier_primary.bmp", &pd);
+	Pixel_Data_From_BMP_File( "./images/tinier_primary.bmp", &pd);
 	int fd = open("./images/tinier_encoded.bin", O_WRONLY | O_CREAT);
-	fB_RGB(fd, pd, 255);
+	fB_RGB(fd, pd, 255); //WORKS!
+	//fB_Red(fd, pd, 0xF0);
 	return close(fd);
+}
+
+int test6() {
+	unsigned char depth;
+	struct PixelData *pd1, *pd2, *pd3, *pd4;
+	int fd1, fd2, fd3, fd4;
+
+	Pixel_Data_From_BMP_File( "./images/wheel_bgr_lsb_1all.bmp", &pd1);
+	Pixel_Data_From_BMP_File( "./images/wheel_bgr_msb_1all.bmp", &pd2);
+	Pixel_Data_From_BMP_File( "./images/wheel_bgr_lsb_2all.bmp", &pd3);
+	Pixel_Data_From_BMP_File( "./images/wheel_bgr_msb_2all.bmp", &pd4);
+	fd1 = open("./images/out1.bin", O_WRONLY | O_CREAT);
+	fd2 = open("./images/out2.bin", O_WRONLY | O_CREAT);
+	fd3 = open("./images/out3.bin", O_WRONLY | O_CREAT);
+	fd4 = open("./images/out4.bin", O_WRONLY | O_CREAT);
+	fB_RGB(fd1, pd1, 0x01);
+	fB_RGB(fd2, pd2, 0x01);
+	fB_RGB(fd3, pd3, 0x03);
+	fB_RGB(fd4, pd4, 0x03);
+	return close(fd1) | close(fd2) | close(fd3) | close(fd4);
 }
