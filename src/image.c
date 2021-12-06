@@ -92,7 +92,7 @@ int test3() {
 }
 
 int Packed_RGB_To_Pixel_Data(void *rgb, unsigned int size, BMP_Header *header, struct PixelData **pDat) {
-	pDat = malloc(sizeof(struct PixelData)); //opportunity to error-check
+	*pDat = malloc(sizeof(struct PixelData)); //opportunity to error-check
 	(*pDat)->data = rgb;
 
 	if (header->BitsPerPixel == 8) {

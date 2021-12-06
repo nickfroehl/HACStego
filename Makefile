@@ -40,6 +40,8 @@ SRC_TARGETS = image algos main
 
 run: all
 	./build/hacstego.x
+gdb: all
+	gdb ./build/hacstego.x
 
 all: $(LIB_TARGETS) $(SRC_TARGETS)
 
