@@ -214,17 +214,17 @@ int test6() {
 	struct PixelData *pd1, *pd2, *pd3, *pd4;
 	int fd1, fd2, fd3, fd4;
 
-	Pixel_Data_From_BMP_File( "./images/wheel_bgr_lsb_1all.bmp", &pd1);
-	Pixel_Data_From_BMP_File( "./images/wheel_bgr_msb_1all.bmp", &pd2);
-	Pixel_Data_From_BMP_File( "./images/wheel_bgr_lsb_2all.bmp", &pd3);
+	//Pixel_Data_From_BMP_File( "./images/wheel_bgr_lsb_1all.bmp", &pd1);
+	//Pixel_Data_From_BMP_File( "./images/wheel_bgr_msb_1all.bmp", &pd2);
+	//Pixel_Data_From_BMP_File( "./images/wheel_bgr_lsb_2all.bmp", &pd3);
 	Pixel_Data_From_BMP_File( "./images/wheel_bgr_msb_2all.bmp", &pd4);
-	fd1 = open("./images/out1.bin", O_WRONLY | O_CREAT);
-	fd2 = open("./images/out2.bin", O_WRONLY | O_CREAT);
-	fd3 = open("./images/out3.bin", O_WRONLY | O_CREAT);
+	//fd1 = open("./images/out1.bin", O_WRONLY | O_CREAT);
+	//fd2 = open("./images/out2.bin", O_WRONLY | O_CREAT);
+	//fd3 = open("./images/out3.bin", O_WRONLY | O_CREAT);
 	fd4 = open("./images/out4.bin", O_WRONLY | O_CREAT);
-	fB_RGB(fd1, pd1, 0x01);
-	fB_RGB(fd2, pd2, 0x01);
-	fB_RGB(fd3, pd3, 0x03);
+	//fB_RGB(fd1, pd1, 0x01);
+	//fB_RGB(fd2, pd2, 0x01);
+	//fB_RGB(fd3, pd3, 0x03);
 	fB_RGB(fd4, pd4, 0x03);
-	return close(fd1) | close(fd2) | close(fd3) | close(fd4);
+	return close(fd4);
 }

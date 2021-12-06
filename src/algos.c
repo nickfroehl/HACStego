@@ -75,6 +75,7 @@ unsigned char nLSB_flag(unsigned char nBits) {
 	for (unsigned char i = 0; i < 8 - nBits; i++) {
 		flag >>= 1;
 	}
+	printf("%d\n", flag);
 	return flag;
 }
 

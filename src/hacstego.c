@@ -23,6 +23,7 @@ int main(int argc, char**argv) {
 	printf("test4: %d\n", a);
 	a = (channel) test5();
 	printf("test5: %d\n", a);
+	
 	a = (channel) test6();
 	printf("test6: %d\n", a);
 	*/
@@ -37,7 +38,7 @@ int main(int argc, char**argv) {
 	sscanf(argv[4], "%c", &do_B);
 	*/
 	
-	//args: <bin_name> s:algo s:filename.bmp x:arg
+	//args: <bin_name> s:algo p:filename.bmp x:arg NOT INCLUDED: p:outdir
 		//arg is FLAG or N or 0, but always provide it!
 	
 	Pixel_Data_From_BMP_File(argv[2], &pDat);
@@ -54,32 +55,32 @@ int main(int argc, char**argv) {
 		printf("failed to open file, E:%d :(\n", fd);
 		return fd;
 	}
-	//printf("%hhx\n", flag);
+	printf("%hhx\n", flag);
 	
-	if (strcmp(argv[1], "LSB_Red")) return LSB_Red(fd, pDat);
-	else if (strcmp(argv[1], "nLSB_Red")) return nLSB_Red(fd, pDat, flag);
-	else if (strcmp(argv[1], "fB_Red")) return fB_Red(fd, pDat, flag);
-	else if (strcmp(argv[1], "MSB_Red")) return MSB_Red(fd, pDat);
-	else if (strcmp(argv[1], "nMSB_Red")) return nMSB_Red(fd, pDat, flag);
+	if (!strcmp(argv[1], "LSB_Red")) return LSB_Red(fd, pDat);
+	else if (!strcmp(argv[1], "nLSB_Red")) return nLSB_Red(fd, pDat, flag);
+	else if (!strcmp(argv[1], "fB_Red")) return fB_Red(fd, pDat, flag);
+	else if (!strcmp(argv[1], "MSB_Red")) return MSB_Red(fd, pDat);
+	else if (!strcmp(argv[1], "nMSB_Red")) return nMSB_Red(fd, pDat, flag);
 	
-	else if (strcmp(argv[1], "LSB_Green")) return LSB_Green(fd, pDat);
-	else if (strcmp(argv[1], "nLSB_Green")) return nLSB_Green(fd, pDat, flag);
-	else if (strcmp(argv[1], "fB_Green")) return fB_Green(fd, pDat, flag);
-	else if (strcmp(argv[1], "MSB_Green")) return MSB_Green(fd, pDat);
-	else if (strcmp(argv[1], "nMSB_Green")) return nMSB_Green(fd, pDat, flag);
+	else if (!strcmp(argv[1], "LSB_Green")) return LSB_Green(fd, pDat);
+	else if (!strcmp(argv[1], "nLSB_Green")) return nLSB_Green(fd, pDat, flag);
+	else if (!strcmp(argv[1], "fB_Green")) return fB_Green(fd, pDat, flag);
+	else if (!strcmp(argv[1], "MSB_Green")) return MSB_Green(fd, pDat);
+	else if (!strcmp(argv[1], "nMSB_Green")) return nMSB_Green(fd, pDat, flag);
 	
-	else if (strcmp(argv[1], "LSB_Blue")) return LSB_Blue(fd, pDat);
-	else if (strcmp(argv[1], "nLSB_Blue")) return nLSB_Blue(fd, pDat, flag);
-	else if (strcmp(argv[1], "fB_Blue")) return fB_Blue(fd, pDat, flag);
-	else if (strcmp(argv[1], "MSB_Blue")) return MSB_Blue(fd, pDat);
-	else if (strcmp(argv[1], "nMSB_Blue")) return nMSB_Blue(fd, pDat, flag);
+	else if (!strcmp(argv[1], "LSB_Blue")) return LSB_Blue(fd, pDat);
+	else if (!strcmp(argv[1], "nLSB_Blue")) return nLSB_Blue(fd, pDat, flag);
+	else if (!strcmp(argv[1], "fB_Blue")) return fB_Blue(fd, pDat, flag);
+	else if (!strcmp(argv[1], "MSB_Blue")) return MSB_Blue(fd, pDat);
+	else if (!strcmp(argv[1], "nMSB_Blue")) return nMSB_Blue(fd, pDat, flag);
 	
-	else if (strcmp(argv[1], "LSB_RGB")) return LSB_RGB(fd, pDat);
-	else if (strcmp(argv[1], "nLSB_RGB")) return nLSB_RGB(fd, pDat, flag);
-	else if (strcmp(argv[1], "fB_RGB")) return fB_RGB(fd, pDat, flag);
-	else if (strcmp(argv[1], "MSB_RGB")) return MSB_RGB(fd, pDat);
-	else if (strcmp(argv[1], "nMSB_RGB")) return nMSB_RGB(fd, pDat, flag);
-	
+	else if (!strcmp(argv[1], "LSB_RGB")) return LSB_RGB(fd, pDat);
+	else if (!strcmp(argv[1], "nLSB_RGB")) return nLSB_RGB(fd, pDat, flag);
+	else if (!strcmp(argv[1], "fB_RGB")) return fB_RGB(fd, pDat, flag);
+	else if (!strcmp(argv[1], "MSB_RGB")) return MSB_RGB(fd, pDat);
+	else if (!strcmp(argv[1], "nMSB_RGB")) return nMSB_RGB(fd, pDat, flag);
+	//*/
 
 
 	/*
@@ -102,5 +103,5 @@ int main(int argc, char**argv) {
 	} else return 2;
 	*/
 	
-	return 3;
+	return 0;
 }
