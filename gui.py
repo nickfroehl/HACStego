@@ -32,13 +32,12 @@ def choose_img_dec():
     in_img_path_var_dec.set(path)
 
 def hide_data():
-    global in_img_path_var_enc, in_secret_path_var, alg_dropdown, out_file_entry
-    encode(in_img_path_var_enc.get(), in_secret_path_var.get(), alg_dropdown.get(), out_file_entry.get())
+    global in_img_path_var_enc, in_secret_path_var, alg_dropdown_enc, arg_entry_enc, out_file_entry
+    encode(in_img_path_var_enc.get(), in_secret_path_var.get(), alg_dropdown_enc.get(), arg_entry_enc.get(), out_file_entry.get())
 
 def find_data():
-    global in_img_path_var_dec, alg_multiselect, out_file_loc_entry
-    algorithms = [alg_multiselect.get(i) for i in alg_multiselect.curselection()]
-    decode(in_img_path_var_dec.get(), algorithms, out_file_loc_entry.get())
+    global in_img_path_var_dec, alg_dropdown_dec, arg_entry_dec, out_file_loc_entry
+    decode(in_img_path_var_dec.get(), alg_dropdown_dec.get(), arg_entry_dec.get(), out_file_loc_entry.get())
 
 def change_mode():
     global mode
@@ -107,9 +106,13 @@ in_secret_row = tk.Frame(window)
 in_secret_button = tk.Button(in_secret_row, text="Choose File To Hide", command=choose_file)
 in_secret_path_var = pack_with_variable_label(in_secret_row, in_secret_button, "(No File Selected)")
 
-alg_row = tk.Frame(window)
-alg_dropdown = ttk.Combobox(alg_row, values=algorithms)
-pack_with_static_label(alg_row, "Select Encoding Algorithm:", alg_dropdown)
+alg_row_enc = tk.Frame(window)
+alg_dropdown_enc = ttk.Combobox(alg_row_enc, values=algorithms)
+pack_with_static_label(alg_row_enc, "Select Encoding Algorithm:", alg_dropdown_enc)
+
+arg_row_enc = tk.Frame(window)
+arg_entry_enc = tk.Entry(arg_row_enc)
+pack_with_static_label(arg_row_enc, "Algorithm Argument:", arg_entry_enc)
 
 out_file_row = tk.Frame(window)
 out_file_entry = tk.Entry(out_file_row)
@@ -117,7 +120,7 @@ pack_with_static_label(out_file_row, "Output File Path:", out_file_entry)
 
 hide_data_button = tk.Button(window, text="Hide Data", command=hide_data)
 
-encode_widgets = [in_img_row_enc, in_secret_row, alg_row, out_file_row, hide_data_button]
+encode_widgets = [in_img_row_enc, in_secret_row, alg_row_enc, arg_row_enc, out_file_row, hide_data_button]
 
 
 # Decode Mode Widgets
@@ -126,9 +129,13 @@ in_img_row_dec = tk.Frame(window)
 in_img_button_dec = tk.Button(in_img_row_dec, text="Choose Image To Decode", command=choose_img_dec)
 in_img_path_var_dec = pack_with_variable_label(in_img_row_dec, in_img_button_dec, "(No File Selected)")
 
-alg_label = tk.Label(window, text="Select Decoding Algorithms To Try:")
-alg_multiselect = tk.Listbox(window, selectmode="multiple")
-alg_multiselect.insert(0, *algorithms)
+alg_row_dec = tk.Frame(window)
+alg_dropdown_dec = ttk.Combobox(alg_row_dec, values=algorithms)
+pack_with_static_label(alg_row_dec, "Select Decoding Algorithm:", alg_dropdown_dec)
+
+arg_row_dec = tk.Frame(window)
+arg_entry_dec = tk.Entry(arg_row_dec)
+pack_with_static_label(arg_row_dec, "Algorithm Argument:", arg_entry_dec)
 
 out_file_loc_row = tk.Frame(window)
 out_file_loc_entry = tk.Entry(out_file_loc_row)
@@ -136,7 +143,7 @@ pack_with_static_label(out_file_loc_row, "Output File Location Path:", out_file_
 
 hide_data_button = tk.Button(window, text="Find Data", command=find_data)
 
-decode_widgets = [in_img_row_dec, alg_label, alg_multiselect, out_file_loc_row, hide_data_button]
+decode_widgets = [in_img_row_dec, alg_row_dec, arg_row_dec, out_file_loc_row, hide_data_button]
 
 
 # Start

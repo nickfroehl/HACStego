@@ -1,20 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 #include <png.h>
 
 #include "image.h"
 #include "errno.h"
 #include "qdbmp.h"
+#include "algos.h"
 //#include "spng.h"
 
 
 char is_png(const char *file_name) {
 	FILE *fp;
 	char magic[PNG_MAGIC_SIZE];
-	
+
 	fp = fopen(file_name, "rb");
-	
+
 	if (!fp) return EBADFILE;
 	fread(magic, 1, PNG_MAGIC_SIZE, fp);
 	if (png_sig_cmp(magic, 0, PNG_MAGIC_SIZE)) return ENOTPNG;
@@ -42,12 +44,12 @@ int test2() {
 	printf("width, height: %d,%d\n", width, height);
 	cpp = png_get_rows(read_ptr, info_ptr);
 	for (i=0; i<height && i<10; i++) for (j=0; j<width && j<30; j+=3) {
-		printf("(%d,%d): %d,%d,%d\n", 
+		printf("(%d,%d): %d,%d,%d\n",
 			i,j,
 			cpp[i][j], cpp[i][j+1], cpp[i][j+2]
 		);
 	}
-	
+
 	fclose(fp);
 	return bit_depth;
 }
@@ -56,7 +58,7 @@ int test3() {
 	BMP *bmp;
 	UCHAR r,g,b;
 	UINT width, height, x, y;
-	
+
 	/* Read an image file */
 	bmp = BMP_ReadFile("./images/tinier_primary.bmp");
 	BMP_CHECK_ERROR( stderr, -1 ); /* If an error has occurred, notify and exit */
@@ -119,8 +121,19 @@ int test4() {
 	unsigned char *rgb, depth;
 	unsigned int size;
 	UINT i, res;
-	
+
 	res = RGB_From_BMP_File( "./images/tinier_primary.bmp", &rgb, &size, &depth );
 	for (i=0; i<size; i+=3) printf("%x,%x,%x\n", rgb[i+2], rgb[i+1], rgb[i]);
 	return res;
 }
+
+/* int test5() {
+	unsigned char *rgb, depth;
+	unsigned int size;
+	UINT i, res;
+
+	res = RGB_From_BMP_File( "./images/tinier_primary.bmp", &rgb, &size, &depth );
+	int fd = open("./images/tinier_encoded.bin", O_WRONLY | O_CREAT);
+	fB_RGB(fd, )
+	return res;
+} */
