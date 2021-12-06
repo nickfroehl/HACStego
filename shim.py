@@ -9,4 +9,4 @@ def decode(in_img_path, algorithm, arg, out_file_loc_path):
     if (arg == None):
         arg = "0"
     print("./build/hacstego.x "+algorithm+" "+in_img_path+" "+arg+" "+out_file_loc_path)
-    os.system("./build/hacstego.x "+algorithm+" "+in_img_path+" "+arg+" "+out_file_loc_path)
+	os.system("./build/hacstego.x "+algorithm+" "+in_img_path+" "+arg+" "+out_file_loc_path)
