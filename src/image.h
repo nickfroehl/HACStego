@@ -2,12 +2,14 @@
 #define HACSTEGO_IMAGES_H
 
 #define PNG_MAGIC_SIZE 8
+#define MAX_CHANNELS 5
+#define MAX_CHANNEL_BIT_DEPTH 8
 
 typedef unsigned char channel;
 
 struct PixelData {
 	void* data;
-	unsigned char bitDepth;
+	unsigned char channelBitDepths[MAX_CHANNELS];
 	unsigned char nChannels;
 };
 struct Pixel {
