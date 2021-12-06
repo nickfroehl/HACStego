@@ -58,7 +58,7 @@ int test3() {
 	UINT width, height, x, y;
 	
 	/* Read an image file */
-	bmp = BMP_ReadFile("./images/all_gray.bmp");
+	bmp = BMP_ReadFile("./images/tinier_primary.bmp");
 	BMP_CHECK_ERROR( stderr, -1 ); /* If an error has occurred, notify and exit */
 
 	/* Get image's dimensions */
@@ -70,14 +70,14 @@ int test3() {
 		for ( y = 0 ; y < height ; ++y ) {
 			/* Get pixel's RGB values */
 			BMP_GetPixelRGB( bmp, x, y, &r, &g, &b );
-			printf("(%ld,%ld): %d,%d,%d\n", x,y,r,g,b);
+			printf("(%ld,%ld): %x,%x,%x\n", x,y,r,g,b);
 			/* Invert RGB values */
-			BMP_SetPixelRGB( bmp, x, y, 255 - r, 255 - g, 255 - b );
+			//BMP_SetPixelRGB( bmp, y, x, 255 - r, 255 - g, 255 - b );
 		}
 	}
 
 	/* Save result */
-	BMP_WriteFile( bmp, "./images/custom_inv.bmp" );
+	//BMP_WriteFile( bmp, "./images/custom_inv.bmp" );
 	BMP_CHECK_ERROR( stderr, -2 );
 
 	/* Free all memory allocated for the image */
@@ -86,18 +86,9 @@ int test3() {
 	return 0;
 }
 
-int test4() {
-	unsigned char *rgb;
-	unsigned int size, offset, depth;
-	UINT i, res;
-	
-	res = RGB_From_BMP_File( "./images/tiny_primary.bmp", &rgb, &size, &depth );
-	for (i=offset=0; i<size; offset+=(i+=3)) printf("%u,%u,%u\n", rgb[offset], rgb[offset+1], rgb[offset+2]);
-	return res;
-}
-
 #define BMP_DATABYTES_PER_ROW (bmp->Header.Width*(bmp->Header.BitsPerPixel>>3))
 #define BMP_PADDING_PER_ROW ((4-((BMP_DATABYTES_PER_ROW)%4))%4)
+#define BMP_ROWWIDTH (BMP_DATABYTES_PER_ROW + BMP_PADDING_PER_ROW)
 //runs slow, but time is money; better to write own / modify BMP library to auto-do this
 int BMP_Data_To_Packed_RGB(BMP *bmp, void **rgb, unsigned int *size, unsigned char *bit_depth) {
 	unsigned int i, rgb_offset, bmp_offset;
@@ -109,10 +100,10 @@ int BMP_Data_To_Packed_RGB(BMP *bmp, void **rgb, unsigned int *size, unsigned ch
 	*size = bmp->Header.ImageDataSize - bmp->Header.Height*BMP_PADDING_PER_ROW;
 	//printf("%u --> %u, because %u=%u*...\n", bmp->Header.ImageDataSize, *size, BMP_PADDING_PER_ROW, bmp->Header.Width);
 	*rgb = malloc(*size); //opportunity to error-check
-	printf("%u = %u*%u\n", BMP_DATABYTES_PER_ROW, bmp->Header.Width, bmp->Header.BitsPerPixel>>3);
-	for (i=rgb_offset=bmp_offset=0;
+	printf("%lu-%lu = %lu = %lu*%u. %lu\n", BMP_ROWWIDTH, BMP_PADDING_PER_ROW, BMP_DATABYTES_PER_ROW, bmp->Header.Width, bmp->Header.BitsPerPixel>>3, bmp->Header.Height);
+	for (i=0, /*rgb_offset=bmp->Header.Height*BMP_DATABYTES_PER_ROW,*/ bmp_offset=(bmp->Header.Height-1)*BMP_ROWWIDTH, rgb_offset=0;
 		i<bmp->Header.Height;
-		i++, rgb_offset+=BMP_DATABYTES_PER_ROW, bmp_offset=BMP_PADDING_PER_ROW
+		i++, rgb_offset+=BMP_DATABYTES_PER_ROW, bmp_offset-=BMP_ROWWIDTH
 	) memcpy(*rgb+rgb_offset, bmp->Data+bmp_offset, BMP_DATABYTES_PER_ROW);
 	return 0;
 }
@@ -121,5 +112,15 @@ int RGB_From_BMP_File(const char *filename, void **rgb, unsigned int *size, unsi
 	int res;
 	bmp = BMP_ReadFile(filename);
 	res = BMP_Data_To_Packed_RGB(bmp, rgb, size, bit_depth);
+	return res;
+}
+
+int test4() {
+	unsigned char *rgb, depth;
+	unsigned int size;
+	UINT i, res;
+	
+	res = RGB_From_BMP_File( "./images/tinier_primary.bmp", &rgb, &size, &depth );
+	for (i=0; i<size; i+=3) printf("%x,%x,%x\n", rgb[i+2], rgb[i+1], rgb[i]);
 	return res;
 }

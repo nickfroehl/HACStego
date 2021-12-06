@@ -19,5 +19,6 @@ struct Pixel {
 int test1();
 int test2();
 int test3();
+int test4();
 
 #endif
