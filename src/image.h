@@ -11,6 +11,7 @@ struct PixelData {
 	void* data;
 	unsigned char channelBitDepths[MAX_CHANNELS];
 	unsigned char nChannels;
+	unsigned long nPixels;
 };
 struct Pixel {
 	channel red, green, blue, c4, c5;
