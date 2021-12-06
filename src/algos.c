@@ -1,14 +1,19 @@
-#include <stdio.h>
+#include <unistd.h>
 
 #include "algos.h"
 #include "image.h"
 
 #define BUFFER_SIZE_BITS 8
+#define N_LSB_FLAG(n) nLSB_flag(n)
+#define N_MSB_FLAG(n) nMSB_flag(n)
+#define LSB_FLAG 1
+#define MSB_FLAG 255
+#define NO_FLAG 0
 
 
 int writeBufferToFile(int fd, char buffer) {
     int bufferSizeBytes = BUFFER_SIZE_BITS / 8;
-    return write(fd, buffer, bufferSizeBytes) == bufferSizeBytes;
+    return write(fd, &buffer, bufferSizeBytes) == bufferSizeBytes;
 }
 
 int fB(int fd, struct PixelData *pd, unsigned char *flags) {
@@ -64,82 +69,70 @@ unsigned char nMSB_flag(unsigned char nBits) {
     return flag;
 }
 
-unsigned char LSB_flag() {
-    return 1;
-}
-
-unsigned char MSB_flag() {
-    return 255;
-}
-
-unsigned char no_flag() {
-    return 0;
-}
-
 
 int fB_Red(int fd, struct PixelData *pd, unsigned char flag) {
-    unsigned char flags[] = {no_flag(), no_flag(), flag};
+    unsigned char flags[] = {NO_FLAG, NO_FLAG, flag};
     return fB(fd, pd, flags);
 }
 
 int LSB_Red(int fd, struct PixelData *pd) {
-    return fB_Red(fd, pd, LSB_flag);
+    return fB_Red(fd, pd, LSB_FLAG);
 }
 
 int nLSB_Red(int fd, struct PixelData *pd, unsigned char nBits) {
-    return fB_Red(fd, pd, nLSB_flag(nBits));
+    return fB_Red(fd, pd, N_LSB_FLAG(nBits));
 }
 
 int MSB_Red(int fd, struct PixelData *pd) {
-    return fB_Red(fd, pd, MSB_flag());
+    return fB_Red(fd, pd, MSB_FLAG);
 }
 
 int nMSB_Red(int fd, struct PixelData *pd, unsigned char nBits) {
-    return fB_Red(fd, pd, nMSB_flag(nBits));
+    return fB_Red(fd, pd, N_MSB_FLAG(nBits));
 }
 
 
 int fB_Blue(int fd, struct PixelData *pd, unsigned char flag) {
-    unsigned char flags[] = {flag, no_flag(), no_flag()};
+    unsigned char flags[] = {flag, NO_FLAG, NO_FLAG};
     return fB(fd, pd, flags);
 }
 
 int LSB_Blue(int fd, struct PixelData *pd) {
-    return fB_Blue(fd, pd, LSB_flag);
+    return fB_Blue(fd, pd, LSB_FLAG);
 }
 
 int nLSB_Blue(int fd, struct PixelData *pd, unsigned char nBits) {
-    return fB_Blue(fd, pd, nLSB_flag(nBits));
+    return fB_Blue(fd, pd, N_LSB_FLAG(nBits));
 }
 
 int MSB_Blue(int fd, struct PixelData *pd) {
-    return fB_Blue(fd, pd, MSB_flag());
+    return fB_Blue(fd, pd, MSB_FLAG);
 }
 
 int nMSB_Blue(int fd, struct PixelData *pd, unsigned char nBits) {
-    return fB_Blue(fd, pd, nMSB_flag(nBits));
+    return fB_Blue(fd, pd, N_MSB_FLAG(nBits));
 }
 
 
 int fB_Green(int fd, struct PixelData *pd, unsigned char flag) {
-    unsigned char flags[] = {no_flag(), flag, no_flag()};
+    unsigned char flags[] = {NO_FLAG, flag, NO_FLAG};
     return fB(fd, pd, flags);
 }
 
 int LSB_Green(int fd, struct PixelData *pd) {
-    return fB_Green(fd, pd, LSB_flag);
+    return fB_Green(fd, pd, LSB_FLAG);
 }
 
 int nLSB_Green(int fd, struct PixelData *pd, unsigned char nBits) {
-    return fB_Green(fd, pd, nLSB_flag(nBits));
+    return fB_Green(fd, pd, N_LSB_FLAG(nBits));
 }
 
 int MSB_Green(int fd, struct PixelData *pd) {
-    return fB_Green(fd, pd, MSB_flag());
+    return fB_Green(fd, pd, MSB_FLAG);
 }
 
 int nMSB_Green(int fd, struct PixelData *pd, unsigned char nBits) {
-    return fB_Green(fd, pd, nMSB_flag(nBits));
+    return fB_Green(fd, pd, N_MSB_FLAG(nBits));
 }
 
 
@@ -149,17 +142,17 @@ int fB_RGB(int fd, struct PixelData *pd, unsigned char flag) {
 }
 
 int LSB_RGB(int fd, struct PixelData *pd) {
-    return fB_RGB(fd, pd, LSB_flag);
+    return fB_RGB(fd, pd, LSB_FLAG);
 }
 
 int nLSB_RGB(int fd, struct PixelData *pd, unsigned char nBits) {
-    return fB_RGB(fd, pd, nLSB_flag(nBits));
+    return fB_RGB(fd, pd, N_LSB_FLAG(nBits));
 }
 
 int MSB_RGB(int fd, struct PixelData *pd) {
-    return fB_RGB(fd, pd, MSB_flag());
+    return fB_RGB(fd, pd, MSB_FLAG);
 }
 
 int nMSB_RGB(int fd, struct PixelData *pd, unsigned char nBits) {
-    return fB_RGB(fd, pd, nMSB_flag(nBits));
+    return fB_RGB(fd, pd, N_MSB_FLAG(nBits));
 }

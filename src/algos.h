@@ -1,3 +1,5 @@
+#include "image.h"
+
 #ifndef HACSTEGO_ALGOS_H
 #define HACSTEGO_ALGOS_H
 
