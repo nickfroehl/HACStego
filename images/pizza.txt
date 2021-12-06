@@ -1,0 +1,1 @@
+fB_Blue 0x57, to BMP
