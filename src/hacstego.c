@@ -9,5 +9,7 @@ int main(int argc, char**argv) {
 	printf("test1: %d\n", a);
 	a = (channel) test3();
 	printf("test3: %d\n", a);
+	a = (channel) test4();
+	printf("test4: %d\n", a);
 	return 0;
 }

@@ -2,38 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-/* Bitmap header */
-typedef struct _BMP_Header
-{
-	USHORT		Magic;				/* Magic identifier: "BM" */
-	UINT		FileSize;			/* Size of the BMP file in bytes */
-	USHORT		Reserved1;			/* Reserved */
-	USHORT		Reserved2;			/* Reserved */
-	UINT		DataOffset;			/* Offset of image data relative to the file's start */
-	UINT		HeaderSize;			/* Size of the header in bytes */
-	UINT		Width;				/* Bitmap's width */
-	UINT		Height;				/* Bitmap's height */
-	USHORT		Planes;				/* Number of color planes in the bitmap */
-	USHORT		BitsPerPixel;		/* Number of bits per pixel */
-	UINT		CompressionType;	/* Compression type */
-	UINT		ImageDataSize;		/* Size of uncompressed image's data */
-	UINT		HPixelsPerMeter;	/* Horizontal resolution (pixels per meter) */
-	UINT		VPixelsPerMeter;	/* Vertical resolution (pixels per meter) */
-	UINT		ColorsUsed;			/* Number of color indexes in the color table that are actually used by the bitmap */
-	UINT		ColorsRequired;		/* Number of color indexes that are required for displaying the bitmap */
-} BMP_Header;
-
-
-/* Private data structure */
-struct _BMP
-{
-	BMP_Header	Header;
-	UCHAR*		Palette;
-	UCHAR*		Data;
-};
-
-
 /* Holds the last error code */
 static BMP_STATUS BMP_LAST_ERROR_CODE = 0;
 
