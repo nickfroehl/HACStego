@@ -14,6 +14,8 @@ struct Pixel {
 	channel red, green, blue, c4, c5;
 };
 
-int test();
+int test1();
+int test2();
+int test3();
 
 #endif

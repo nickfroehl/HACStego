@@ -5,8 +5,9 @@
 
 int main(int argc, char**argv) {
 	channel a = 5;
-	printf("yay %d\n", a);
-	a = (channel) test();
-	printf("yay2 %d\n", a);
+	a = (channel) test1();
+	printf("test1: %d\n", a);
+	a = (channel) test3();
+	printf("test3: %d\n", a);
 	return 0;
 }

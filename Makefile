@@ -38,20 +38,23 @@ CFLAGS = $(CINCL) -g
 LIB_TARGETS = bmplib
 SRC_TARGETS = image algos main
 
+run: all
+	./build/hacstego.x
+
 all: $(LIB_TARGETS) $(SRC_TARGETS)
 
 main: algos
-	$(CC) $(CFLAGS) $(SDIR)/hacstego.c $(BDIR)/image.o $(BDIR)/algos.o $(CLIBS) -o $(BDIR)/hacstego.x
+	$(CC) $(CFLAGS) $(SDIR)/hacstego.c $(BDIR)/image.o $(BDIR)/algos.o $(BMP_LIBDIR)/$(BMP_LIB_FILE) $(CLIBS) -o $(BDIR)/hacstego.x
 	
 algos: image
 	$(CC) $(CFLAGS) -c $(SDIR)/algos.c -o $(BDIR)/algos.o
 image: $(LIB_TARGETS)
-	$(CC) $(CFLAGS) -c $(SDIR)/image.c $(BMP_LIBDIR)/$(BMP_LIB_FILE) -o $(BDIR)/image.o
+	$(CC) $(CFLAGS) -c $(SDIR)/image.c -o $(BDIR)/image.o
 
 #pnglib: $(PNG_LIBDIR)/$(PNG_LIB_FILE)
 #not specifying how to make it cuz scary
 pnglib:
 	echo "Must apt install libpng-dev"
 
-bmplib:
+bmplib: $(BMP_LIBDIR)/$(BMP_LIB_FILE)
 	$(CC) $(CFLAGS) -c $(BMP_LIBDIR)/$(BMP_SRC_FILE) -o $(BMP_LIBDIR)/$(BMP_LIB_FILE)
